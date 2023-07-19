@@ -4,7 +4,7 @@ import torch.nn.functional as F
 
 from rotation_utils import Ortho6d2Mat
 
-from modules import ModifiedResnet, PointNet2MSG, PoseNet
+from modules import ModifiedResnet, PointNet2MSG
 from losses import SmoothL1Dis, ChamferDis, PoseDis
 
 class IST_Net(nn.Module):
@@ -176,12 +176,12 @@ class FeatureDeformer(nn.Module):
 
         pts_w = self.pred_nocs(pts_local_w)
         pts_w = pts_w.view(-1, 3, npoint).contiguous()
-        pts_w = torch.index_select(pts_w, 0, index)   # bs x 3 x nv
-        pts_w = pts_w.permute(0, 2, 1).contiguous()   # bs x nv x 3
+        pts_w = torch.index_select(pts_w, 0, index)   
+        pts_w = pts_w.permute(0, 2, 1).contiguous()   
 
         return pts_local_w, pts_w
     
-class WorldSpaceEnhancer(nn.module):
+class WorldSpaceEnhancer(nn.Module):
     def __init__(self, freeze=False):
         super(WorldSpaceEnhancer, self).__init__()
         self.freeze=freeze

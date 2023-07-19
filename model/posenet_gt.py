@@ -4,14 +4,13 @@ import torch.nn.functional as F
 
 from rotation_utils import Ortho6d2Mat
 
-from modules import ModifiedResnet, PointNet2MSG, PoseNet
+from modules import ModifiedResnet, PointNet2MSG
 from losses import SmoothL1Dis, ChamferDis, PoseDis
-# from lib.pointops.functions import pointops
-# from torch_geometric.nn import global_mean_pool
+
 
 class PoseNetGT(nn.Module):
     def __init__(self, nclass=6, nprior=1024, use_dual_pose=False):
-        super(PoseNet, self).__init__()
+        super(PoseNetGT, self).__init__()
         self.nclass = nclass
         self.nprior = nprior
         self.use_dual_pose = use_dual_pose
