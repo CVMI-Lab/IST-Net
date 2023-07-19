@@ -61,8 +61,8 @@ train_dataloader:
 test:
   img_size: 192
   sample_num: 1024
-  test_path: /newdata/jianhuiliu/Research/6D-pose-estimate/IST-Net/log/debug2
-
+  test_path: 
+  
 rd_seed: 1
 
 per_val: 10  # do the evaluation per per_val epochs 
