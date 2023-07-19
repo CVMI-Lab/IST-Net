@@ -1,4 +1,6 @@
-model_arch: posenet_gt
+model_arch: ist_net
+freeze_world_enhancer: True
+world_enhancer_weights: /dataset/jianhuiliu/temp/model_path/posenet_gt/epoch_30.pth
 
 optimizer:
   name : Adam

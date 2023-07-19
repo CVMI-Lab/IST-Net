@@ -37,8 +37,10 @@ class Solver(gorilla.solver.BaseSolver):
         self.per_write = cfg.per_write
         self.epoch = start_epoch
         self.iter = start_iter
-
-        self.optimizer = optim.Adam(self.model.parameters(), lr=cfg.optimizer.lr, weight_decay=cfg.optimizer.weight_decay)
+        if cfg.get("freeze_world_enhancer", False):
+            self.optimizer = optim.Adam(filter(lambda p: p.requires_grad, self.model.parameters()), lr=cfg.optimizer.lr, weight_decay=cfg.optimizer.weight_decay)
+        else:
+            self.optimizer = optim.Adam(self.model.parameters(), lr=cfg.optimizer.lr, weight_decay=cfg.optimizer.weight_decay)
 
         self.lr_scheduler = optim.lr_scheduler.CyclicLR(self.optimizer, base_lr=1e-5, max_lr=1e-3,
                                             step_size_up=cfg.max_epoch * cfg.num_mini_batch_per_epoch // 6, mode='triangular', cycle_momentum=False)

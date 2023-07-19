@@ -3,7 +3,7 @@ import sys
 import argparse
 import logging
 import random
-
+import collections
 import torch
 import gorilla
 
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     if cfg.model_arch == "ist_net":
         from ist_net import IST_Net, SupervisedLoss
         model = IST_Net(cfg.num_category, cfg.freeze_world_enhancer)
-    if cfg.model_arch == "posenet_gt":
+    elif cfg.model_arch == "posenet_gt":
         from posenet_gt import PoseNetGT, SupervisedLoss
         model = PoseNetGT(cfg.num_category)
     else:
@@ -94,9 +94,30 @@ if __name__ == "__main__":
     else:
         start_epoch = 1
         start_iter = 0
+
     if len(cfg.gpus) > 1:
         model = torch.nn.DataParallel(model, range(len(cfg.gpus.split(","))))
     model = model.cuda()
+
+    # load freezed world enhancer if needed
+    if cfg.checkpoint_epoch == -1 and cfg.get("freeze_world_enhancer", False):
+        assert cfg.world_enhancer_weights is not None
+        checkpoint = torch.load(cfg.world_enhancer_weights, map_location=lambda storage, loc: storage.cuda())
+        world_enhancer_dict = collections.OrderedDict()
+        for k, v in checkpoint["model"].items():
+            if "pts_gt_extractor" in k:
+                if len(cfg.gpus) > 1:
+                    new_k = k.replace("pts_gt_extractor.", "module.world_enhancer.extractor.")
+                else:
+                    new_k = k.replace("pts_gt_extractor.", "world_enhancer.extractor.")
+                world_enhancer_dict[new_k] = v
+        model.load_state_dict(world_enhancer_dict, strict=True)
+        # set grads to False
+        for name, param in model.named_parameters():
+            if "world_enhancer" in name:
+                param.requires_grad = False
+
+
     count_parameters = sum(gorilla.parameter_count(model).values())
     logger.warning("#Total parameters : {}".format(count_parameters))
 

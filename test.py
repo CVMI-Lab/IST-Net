@@ -86,7 +86,7 @@ if __name__ == "__main__":
         logger.info("=> creating model ...")
         if cfg.model_arch == "ist_net":
             from ist_net import IST_Net
-            model = IST_Net(cfg.num_category)
+            model = IST_Net(cfg.num_category, cfg.freeze_world_enhancer)
 
         if len(cfg.gpus)>1:
             model = torch.nn.DataParallel(model, range(len(cfg.gpus.split(","))))

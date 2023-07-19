@@ -46,6 +46,15 @@ For REAL275 and CAMERA25 datasets, please follow the [instruction](https://githu
 python train.py --gpus 0,1 --config config/ist_net_default.yaml
 ```
 
+### Training in seperate manner ###
+If you want to achieve a higher results, we recommand you to train IST-Net in two phase. Phase 1, train the world-space enhancer(WE). Phase 2, freeze the world-space enhancer and train other component from scartch.
+```shell
+# Phase 1
+python train.py --gpus 0,1 --config config/posenet_gt_default.yaml
+# Phase 2, modify the [world_enhancer_path] in yaml file with the model weights saved in phase 1
+python train.py --gpus 0,1 --config config/ist_net_freeze_world_enhancer.yaml
+```
+
 
 ### Evaluation
 ```shell
@@ -57,7 +66,8 @@ If you want to get the same results reported in our paper. You can download the 
 
 |   | IoU50 | IoU75 | 5 degree 2 cm | 5 degree 5 cm | 10 degree 2 cm | 10 degree 5 cm | 10 degree 10 cm | Pre-trained | 
 |---|---|---|---|---|---|---|---|---|
-| IST-Net | 82.5 | 76.6 | 47.5 | 53.4 | 72.1 | 80.5 | 82.6 | [Weights](https://drive.google.com/file/d/1g6PmJU_HasyYDvU5ch1_GFCxKiKnkiZO/view?usp=sharing) |
+| IST-Net | 82.5 | 76.6 | 47.5 | 53.4 | 72.1 | 80.5 | 82.6 | [Weights](https://drive.google.com/file/d/1rntagNJcFS3B4XNbPvugFC23b4tJZ3sZ/view?usp=sharing) |
+| IST-Net freeze WE | 83.8 | 79.2 | 47.5 | 54.6 | 70.3 | 80.2 | 82.3 | [Weights](https://drive.google.com/file/d/1zlTWvsKXCVe7hTMC15bnaG14iA7RDSrN/view?usp=sharing) |
 
 
 ## Citation
