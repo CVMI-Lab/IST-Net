@@ -77,8 +77,6 @@ if __name__ == "__main__":
     if cfg.model_arch == "ist_net":
         from ist_net import IST_Net, SupervisedLoss
         model = IST_Net(cfg.num_category)
-    elif cfg.model_arch == "world_space_enhancer":
-        from 
     else:
         raise Exception('architecture {} not supported yet'.format(cfg.model_arch))
 
