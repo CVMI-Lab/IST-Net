@@ -4,7 +4,8 @@
 This is the official implementation of ***IST-Net***. IST-Net is a clean, simple, and prior-free category-level pose estimator. 
 
 
-**IST-Net: Prior-free Category-level Pose Estimation with Implicit Space Transformation [[Paper](https://arxiv.org/abs/2303.13479)]** <br />
+**IST-Net: Prior-free Category-level Pose Estimation with Implicit Space Transformation** <br />
+[[Paper](https://arxiv.org/abs/2303.13479)] [[Project Page](https://sites.google.com/view/cvmi-ist-net/)] <br />
 [Jianhui Liu](https://scholar.google.com/citations?user=n1JW-jYAAAAJ&hl=en), 
 [Yukang Chen](https://scholar.google.com/citations?user=6p0ygKUAAAAJ&hl=en), [Xiaoqing Ye](https://scholar.google.com/citations?user=yuB-cfoAAAAJ&hl=zh-CN), [Xiaojuan Qi](https://scholar.google.com/citations?user=bGn0uacAAAAJ&hl=en)<br />
 
@@ -19,7 +20,11 @@ conda activate istnet
 # The code is tested on pytorch1.10 & CUDA11.3, please choose the properate vesion of torch
 conda install pytorch==1.10.1 torchvision==0.11.2 torchaudio==0.10.1 cudatoolkit=11.3 -c pytorch -c conda-forge
 # Dependent packages
-pip install gorilla-core==0.2.5.6
+pip install gorilla-core
+pip install gpustat==1.0.0
+pip install opencv-python-headless
+pip install matplotlib
+pip install scipy
 ```
 
 #### ***Compiling***
