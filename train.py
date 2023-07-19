@@ -76,7 +76,10 @@ if __name__ == "__main__":
     logger.info("=> creating model ...")
     if cfg.model_arch == "ist_net":
         from ist_net import IST_Net, SupervisedLoss
-        model = IST_Net(cfg.num_category)
+        model = IST_Net(cfg.num_category, cfg.freeze_world_enhancer)
+    if cfg.model_arch == "posenet_gt":
+        from posenet_gt import PoseNetGT, SupervisedLoss
+        model = PoseNetGT(cfg.num_category)
     else:
         raise Exception('architecture {} not supported yet'.format(cfg.model_arch))
 
@@ -98,8 +101,8 @@ if __name__ == "__main__":
     logger.warning("#Total parameters : {}".format(count_parameters))
 
     # Get Loss
-    loss_syn = SupervisedLoss(cfg.loss).cuda()
-    loss_real = SupervisedLoss(cfg.loss).cuda()
+    loss_syn = SupervisedLoss(cfg).cuda()
+    loss_real = SupervisedLoss(cfg).cuda()
     loss  = {
         "syn": loss_syn,
         "real": loss_real,
