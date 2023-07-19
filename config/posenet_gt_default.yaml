@@ -1,4 +1,4 @@
-model_arch: ist_net
+model_arch: posenet_gt
 freeze_world_enhancer: False
 
 optimizer:
