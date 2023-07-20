@@ -1,13 +1,19 @@
 
-# IST-Net: Prior-free Category-level Pose Estimation with Implicit Space Transformation
+# IST-Net: Prior-free Category-level Pose Estimation with Implicit Space Transformation (ICCV2023)
 
 This is the official implementation of ***IST-Net***. IST-Net is a clean, simple, and prior-free category-level pose estimator. 
 
+<p align="center">
+  IST-Net: Prior-free Category-level Pose Estimation with Implicit Space Transformation (ICCV2023) <br />
+  <a href="https://arxiv.org/abs/2303.13479">[Paper]</a>, 
+  <a href="https://sites.google.com/view/cvmi-ist-net/">[Project Page]</a> <br />
+  <a href="https://sites.google.com/view/jianhuiliu/home">Jianhui Liu</a>, 
+  <a href="https://yukangchen.com/">Yukang Chen</a>,
+  <a href="https://shuluoshu.github.io/">Xiaoqing Ye</a>, 
+  <a href="https://xjqi.github.io/">Xiaojuan Qi</a> 
+</p>
 
-**IST-Net: Prior-free Category-level Pose Estimation with Implicit Space Transformation** <br />
-[[Paper](https://arxiv.org/abs/2303.13479)] [[Project Page](https://sites.google.com/view/cvmi-ist-net/)] <br />
-[Jianhui Liu](https://scholar.google.com/citations?user=n1JW-jYAAAAJ&hl=en), 
-[Yukang Chen](https://scholar.google.com/citations?user=6p0ygKUAAAAJ&hl=en), [Xiaoqing Ye](https://scholar.google.com/citations?user=yuB-cfoAAAAJ&hl=zh-CN), [Xiaojuan Qi](https://scholar.google.com/citations?user=bGn0uacAAAAJ&hl=en)<br />
+
 
 <p align="center"> <img src="docs/main_fig.png" width="100%"> </p>
 
@@ -47,7 +53,7 @@ python train.py --gpus 0,1 --config config/ist_net_default.yaml
 ```
 
 ### Training in seperate manner ###
-If you want to achieve a higher results, we recommand you to train IST-Net in two phase. Phase 1, train the world-space enhancer(WE). Phase 2, freeze the world-space enhancer and train other component from scartch.
+If you want to achieve a higher result, we recommand you to train IST-Net in two phase. Phase 1, train the world-space enhancer(WE). Phase 2, freeze the world-space enhancer and train other component from scartch.
 ```shell
 # Phase 1
 python train.py --gpus 0,1 --config config/posenet_gt_default.yaml

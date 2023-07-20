@@ -9,11 +9,10 @@ from losses import SmoothL1Dis, ChamferDis, PoseDis
 
 
 class PoseNetGT(nn.Module):
-    def __init__(self, nclass=6, nprior=1024, use_dual_pose=False):
+    def __init__(self, nclass=6, nprior=1024):
         super(PoseNetGT, self).__init__()
         self.nclass = nclass
         self.nprior = nprior
-        self.use_dual_pose = use_dual_pose
 
         self.rgb_extractor = ModifiedResnet()
         self.pts_extractor = PointNet2MSG(radii_list=[[0.01, 0.02], [0.02,0.04], [0.04,0.08], [0.08,0.16]])

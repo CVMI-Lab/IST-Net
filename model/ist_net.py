@@ -100,7 +100,7 @@ class SupervisedLoss(nn.Module):
         loss_pose = PoseDis(r, t, s, end_points['rotation_label'],end_points['translation_label'],end_points['size_label'])
         loss_pose_aux_cam = PoseDis(r_aux_cam, t_aux_cam, s_aux_cam, end_points['rotation_label'],end_points['translation_label'], end_points['size_label'])
         cfg = self.cfg
-        loss = loss_pose + loss_pose_aux_cam + cfg.gamma2 * loss_qo + cfg.gamma3*loss_feat
+        loss = loss_pose + loss_pose_aux_cam + cfg.gamma1 * loss_qo + cfg.gamma2*loss_feat
         if not self.freeze_world_enhancer:
             r_aux_world = end_points['pred_rotation_aux_world']
             t_aux_world = end_points['pred_translation_aux_world']
