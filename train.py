@@ -111,7 +111,7 @@ if __name__ == "__main__":
                 else:
                     new_k = k.replace("pts_gt_extractor.", "world_enhancer.extractor.")
                 world_enhancer_dict[new_k] = v
-        model.load_state_dict(world_enhancer_dict, strict=True)
+        model.load_state_dict(world_enhancer_dict, strict=False)
         # set grads to False
         for name, param in model.named_parameters():
             if "world_enhancer" in name:
