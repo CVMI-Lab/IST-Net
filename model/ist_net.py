@@ -60,9 +60,10 @@ class IST_Net(nn.Module):
             end_points['pred_rotation_aux_cam'] = r_aux_cam
             end_points['pred_translation_aux_cam'] = t_aux_cam + c.squeeze(1)
             end_points['pred_size_aux_cam'] = s_aux_cam
-            end_points['pred_rotation_aux_world'] = r_aux_world
-            end_points['pred_translation_aux_world'] = t_aux_world + c.squeeze(1)
-            end_points['pred_size_aux_world'] = s_aux_world
+            if not self.freeze_world_enhancer:
+                end_points['pred_rotation_aux_world'] = r_aux_world
+                end_points['pred_translation_aux_world'] = t_aux_world + c.squeeze(1)
+                end_points['pred_size_aux_world'] = s_aux_world
         else:
             pts_local = self.pts_cam_extractor(pts)
             pts_w, pts_w_local = self.implicit_transform(rgb_local, pts_local, pts, c, index)
