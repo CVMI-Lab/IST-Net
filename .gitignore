@@ -61,16 +61,7 @@ exp/
 build/
 dist/
 
-
-/data/assets
-/data/CAMERA
-/data/Real
-/data/camera_full_depths
-/data/deformnet_eval
-/data/gts
-/data/obj_models
-/data/segmentation_results
-/data/results
+/data
 
 /log
 /result
