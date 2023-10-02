@@ -7,6 +7,7 @@ import _pickle as cPickle
 from tqdm import tqdm
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# BASE_DIR = "/mnt/petrelfs/share_data/liujianhui/NOCS"
 sys.path.append(os.path.join(BASE_DIR, 'utils'))
 from align import align_nocs_to_depth
 
@@ -17,20 +18,20 @@ def create_img_list(data_dir):
     # CAMERA dataset
     for subset in ['train', 'val']:
         img_list = []
-        img_dir = os.path.join(data_dir, 'camera', subset)
+        img_dir = os.path.join(data_dir, 'CAMERA', subset)
         folder_list = [name for name in os.listdir(img_dir) if os.path.isdir(os.path.join(img_dir, name))]
         for i in range(10*len(folder_list)):
             folder_id = int(i) // 10
             img_id = int(i) % 10
             img_path = os.path.join(subset, '{:05d}'.format(folder_id), '{:04d}'.format(img_id))
             img_list.append(img_path)
-        with open(os.path.join(data_dir, 'camera', subset+'_list_all.txt'), 'w') as f:
+        with open(os.path.join(data_dir, 'CAMERA', subset+'_list_all.txt'), 'w') as f:
             for img_path in img_list:
                 f.write("%s\n" % img_path)
     # Real dataset
     for subset in ['train', 'test']:
         img_list = []
-        img_dir = os.path.join(data_dir, 'real', subset)
+        img_dir = os.path.join(data_dir, 'Real', subset)
         folder_list = [name for name in sorted(os.listdir(img_dir)) if os.path.isdir(os.path.join(img_dir, name))]
         for folder in folder_list:
             img_paths = glob.glob(os.path.join(img_dir, folder, '*_color.png'))
@@ -40,7 +41,7 @@ def create_img_list(data_dir):
                 img_ind = img_name.split('_')[0]
                 img_path = os.path.join(subset, folder, img_ind)
                 img_list.append(img_path)
-        with open(os.path.join(data_dir, 'real', subset+'_list_all.txt'), 'w') as f:
+        with open(os.path.join(data_dir, 'Real', subset+'_list_all.txt'), 'w') as f:
             for img_path in img_list:
                 f.write("%s\n" % img_path)
     print('Write all data paths to file done!')
@@ -159,12 +160,12 @@ def process_data(img_path, depth, subset=None):
 
 def annotate_camera_train(data_dir):
     """ Generate gt labels for CAMERA train data. """
-    camera_train = open(os.path.join(data_dir, 'camera', 'train_list_all.txt')).read().splitlines()
+    camera_train = open(os.path.join(data_dir, 'CAMERA', 'train_list_all.txt')).read().splitlines()
     intrinsics = np.array([[577.5, 0, 319.5], [0, 577.5, 239.5], [0, 0, 1]])
 
     valid_img_list = []
     for img_path in tqdm(camera_train):
-        img_full_path = os.path.join(data_dir, 'camera', img_path)
+        img_full_path = os.path.join(data_dir, 'CAMERA', img_path)
         all_exist = os.path.exists(img_full_path + '_color.png') and \
                     os.path.exists(img_full_path + '_coord.png') and \
                     os.path.exists(img_full_path + '_depth.png') and \
@@ -201,7 +202,7 @@ def annotate_camera_train(data_dir):
 
 def annotate_real_train(data_dir):
     """ Generate gt labels for Real train data through PnP. """
-    real_train = open(os.path.join(data_dir, 'real/train_list_all.txt')).read().splitlines()
+    real_train = open(os.path.join(data_dir, 'Real/train_list_all.txt')).read().splitlines()
     intrinsics = np.array([[591.0125, 0, 322.525], [0, 590.16775, 244.11084], [0, 0, 1]])
     # scale factors for all instances
     scale_factors = {}
@@ -213,7 +214,7 @@ def annotate_real_train(data_dir):
 
     valid_img_list = []
     for img_path in tqdm(real_train):
-        img_full_path = os.path.join(data_dir, 'real', img_path)
+        img_full_path = os.path.join(data_dir, 'Real', img_path)
         all_exist = os.path.exists(img_full_path + '_color.png') and \
                     os.path.exists(img_full_path + '_coord.png') and \
                     os.path.exists(img_full_path + '_depth.png') and \
@@ -261,7 +262,7 @@ def annotate_real_train(data_dir):
             cPickle.dump(gts, f)
         valid_img_list.append(img_path)
     # write valid img list to file
-    with open(os.path.join(data_dir, 'real/train_list.txt'), 'w') as f:
+    with open(os.path.join(data_dir, 'Real/train_list.txt'), 'w') as f:
         for img_path in valid_img_list:
             f.write("%s\n" % img_path)
 
@@ -275,8 +276,8 @@ def annotate_test_data(data_dir):
     #   val        3792 imgs        132 imgs         1856 (23) imgs      50 insts
     #   test       0 img            0 img            0 img               2 insts
 
-    camera_val = open(os.path.join(data_dir, 'camera', 'val_list_all.txt')).read().splitlines()
-    real_test = open(os.path.join(data_dir, 'real', 'test_list_all.txt')).read().splitlines()
+    camera_val = open(os.path.join(data_dir, 'CAMERA', 'val_list_all.txt')).read().splitlines()
+    real_test = open(os.path.join(data_dir, 'Real', 'test_list_all.txt')).read().splitlines()
     camera_intrinsics = np.array([[577.5, 0, 319.5], [0, 577.5, 239.5], [0, 0, 1]])
     real_intrinsics = np.array([[591.0125, 0, 322.525], [0, 590.16775, 244.11084], [0, 0, 1]])
     # compute model size
@@ -289,7 +290,7 @@ def annotate_test_data(data_dir):
     for key in models.keys():
         model_sizes[key] = 2 * np.amax(np.abs(models[key]), axis=0)
 
-    subset_meta = [('real', real_test, real_intrinsics, 'test'), ('camera', camera_val, camera_intrinsics, 'val')]
+    subset_meta = [('real', real_test, real_intrinsics, 'test'), ('CAMERA', camera_val, camera_intrinsics, 'val')]
     for source, img_list, intrinsics, subset in subset_meta:
         valid_img_list = []
         for img_path in tqdm(img_list):
@@ -309,7 +310,7 @@ def annotate_test_data(data_dir):
 
             # match each instance with NOCS ground truth to properly assign gt_handle_visibility
             nocs_dir = os.path.join(data_dir, 'results/nocs_results')
-            if source == 'camera':
+            if source == 'CAMERA':
                 nocs_path = os.path.join(nocs_dir, 'val', 'results_val_{}_{}.pkl'.format(
                     img_path.split('/')[-2], img_path.split('/')[-1]))
             else:
