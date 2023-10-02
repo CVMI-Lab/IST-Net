@@ -12,6 +12,8 @@ import pytorch_utils
 
 from pointnet2 import pointnet2_utils
 
+# import ipdb
+
 if False:
     # Workaround for type hints without depending on the `typing` module
     from typing import *
@@ -186,7 +188,7 @@ class PointnetFPModule(nn.Module):
             weight = dist_recip / norm
 
             interpolated_feats = pointnet2_utils.three_interpolate(
-                known_feats, idx, weight
+                known_feats, idx.detach(), weight.detach()
             )
         else:
             interpolated_feats = known_feats.expand(
@@ -199,6 +201,7 @@ class PointnetFPModule(nn.Module):
             )  # (B, C2 + C1, n)
         else:
             new_features = interpolated_feats
+        # ipdb.set_trace()
 
         new_features = new_features.unsqueeze(-1)
         new_features = self.mlp(new_features)

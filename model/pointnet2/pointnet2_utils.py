@@ -331,6 +331,7 @@ class QueryAndGroup(nn.Module):
         new_features : torch.Tensor
             (B, 3 + C, npoint, nsample) tensor
         """
+
         idx = ball_query(self.radius, self.nsample, xyz, new_xyz)
 
         if self.sample_uniformly:
