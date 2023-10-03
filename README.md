@@ -26,7 +26,7 @@ conda activate istnet
 # The code is tested on pytorch1.10 & CUDA11.3, please choose the properate vesion of torch
 conda install pytorch==1.10.1 torchvision==0.11.2 torchaudio==0.10.1 cudatoolkit=11.3 -c pytorch -c conda-forge
 # Dependent packages
-pip install gorilla-core
+pip install gorilla-core==0.2.5.3
 pip install gpustat==1.0.0
 pip install opencv-python-headless
 pip install matplotlib
@@ -43,7 +43,7 @@ python setup.py install
 ```
 
 #### ***Prepare the datasets***
-For REAL275 and CAMERA25 datasets, please follow the [instruction](https://github.com/JiehongLin/Self-DPDN) in DPDN.
+For REAL275 and CAMERA25 datasets, please follow the [instruction](https://github.com/JiehongLin/Self-DPDN) in DPDN. For camera_train.pkl, camera_val.pkl, real_test.pkl, real_rain.pkl, please refer to this [link](https://drive.google.com/file/d/1Nz7cwcQWO_In4K6jKN1-5pQ0orY4UV9x/view?pli=1).
 
 
 ### Training from scartch
