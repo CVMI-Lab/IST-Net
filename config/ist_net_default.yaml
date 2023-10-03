@@ -55,7 +55,7 @@ train_dataloader:
 test:
   img_size: 192
   sample_num: 1024
-  test_path: 
+  test_path:
   
 rd_seed: 1
 

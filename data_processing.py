@@ -290,7 +290,7 @@ def annotate_test_data(data_dir):
     for key in models.keys():
         model_sizes[key] = 2 * np.amax(np.abs(models[key]), axis=0)
 
-    subset_meta = [('real', real_test, real_intrinsics, 'test'), ('CAMERA', camera_val, camera_intrinsics, 'val')]
+    subset_meta = [('Real', real_test, real_intrinsics, 'test'), ('CAMERA', camera_val, camera_intrinsics, 'val')]
     for source, img_list, intrinsics, subset in subset_meta:
         valid_img_list = []
         for img_path in tqdm(img_list):

@@ -225,7 +225,6 @@ def test_func(model, dataloder, save_path):
                 'pts': data['pts'][0].cuda(),
                 'choose': data['choose'][0].cuda(),
                 'category_label': data['category_label'][0].cuda(),
-                'model': data['model'][0].cuda()
             }
             end_points = model(inputs)
 

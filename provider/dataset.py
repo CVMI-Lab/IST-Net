@@ -310,8 +310,6 @@ class TestDataset():
         n_image = len(result_pkl_list)
         print('no. of test images: {}\n'.format(n_image))
 
-        self.mean_shapes = np.load(os.path.join(self.data_dir, 'data', 'mean_shapes.npy')).astype(np.float32)
-
         self.xmap = np.array([[i for i in range(640)] for j in range(480)])
         self.ymap = np.array([[j for i in range(640)] for j in range(480)])
         self.sym_ids = [0, 1, 3]    # 0-indexed
@@ -338,8 +336,6 @@ class TestDataset():
         with open(path, 'rb') as f:
             data = cPickle.load(f)
 
-
-        # print("data keys", data.keys())
         # assert False
         image_path = os.path.join(self.data_dir, data['image_path'])
         image_path = image_path.replace('/data/real/', '/data/Real/')
@@ -348,13 +344,7 @@ class TestDataset():
         pred_mask = data['pred_masks']
 
         num_instance = len(pred_data['pred_class_ids'])
-        
-        # print("imge path:", image_path)
-        # assert False
-        with open(image_path + '_label.pkl', 'rb') as f:
-            gts = cPickle.load(f)
-        # print("num_instance:", num_instance, len(gts['instance_ids']))
-
+    
         # rgb
         rgb = cv2.imread(image_path + '_color.png')[:, :, :3]
         rgb = rgb[:, :, ::-1] #480*640*3
@@ -386,11 +376,6 @@ class TestDataset():
         all_choose = []
         flag_instance = torch.zeros(num_instance) == 1
 
-        # print("num_instance:", num_instance, "gt_num:", len(gts['model_list']))
-        # print("self gt:", gts['model_list'])
-        # print("self model:", len(self.models))
-        #     print("num_instance:", num_instance, "gt_num:", len(gts['model_list']))
-        #     assert False
 
         for j in range(num_instance):
             inst_mask = 255 * pred_mask[:, :, j].astype('uint8')
@@ -420,27 +405,9 @@ class TestDataset():
 
                 cat_id = pred_data['pred_class_ids'][j] - 1 # convert to 0-indexed
 
-                class_name = self.class_name_map[pred_data['pred_class_ids'][j]]
-
-                model = self.models[gts['model_list'][0]].astype(np.float32)
-                for gt_class_name in gts['model_list']:
-                    if class_name in gt_class_name:
-                        model = self.models[gt_class_name].astype(np.float32)
-                        break
-                
-                # print("gts['model_list']:", gts['model_list'], "pred_data['pred_class_ids'][j]:", pred_data['pred_class_ids'][j])
-
-                # if len(gts['model_list']) <= j:
-                #     print("pred_data['pred_class_ids']", pred_data['pred_class_ids'], "mod:", gts['model_list'], "data['gt_handle_visibility']:", data['gt_handle_visibility'], "class:", data['gt_class_ids'], "pred_data['pred_class_ids']:", pred_data['pred_class_ids'])
-                # mod = gts['model_list'][j]
-                # model = self.models[mod].astype(np.float32)
-
-                # model = self.models[gts['model_list'][j]].astype(np.float32)
-
                 all_pts.append(torch.FloatTensor(instance_pts))
                 all_rgb.append(torch.FloatTensor(instance_rgb))
                 all_nocs.append(torch.FloatTensor(instance_nocs))
-                all_models.append(torch.FloatTensor(model))
                 all_cat_ids.append(torch.IntTensor([cat_id]).long())
                 all_choose.append(torch.IntTensor(choose).long())
                 flag_instance[j] = 1
@@ -451,7 +418,6 @@ class TestDataset():
         ret_dict['ori_img'] = torch.tensor(cv2.imread(image_path + '_color.png')[:, :, :3])
         ret_dict['nocs'] = torch.stack(all_nocs)
         ret_dict['choose'] = torch.stack(all_choose)
-        ret_dict['model'] = torch.stack(all_models)
         ret_dict['category_label'] = torch.stack(all_cat_ids).squeeze(1)
 
         ret_dict['gt_class_ids'] = torch.tensor(data['gt_class_ids'])
