@@ -196,7 +196,7 @@ def annotate_camera_train(data_dir):
             cPickle.dump(gts, f)
         valid_img_list.append(img_path)
     # write valid img list to file
-    with open(os.path.join(data_dir, 'camera/train_list.txt'), 'w') as f:
+    with open(os.path.join(data_dir, 'CAMERA/train_list.txt'), 'w') as f:
         for img_path in valid_img_list:
             f.write("%s\n" % img_path)
 
