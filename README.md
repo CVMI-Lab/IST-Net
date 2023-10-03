@@ -43,7 +43,7 @@ python setup.py install
 ```
 
 #### ***Prepare the datasets***
-For REAL275 and CAMERA25 datasets, please follow the [instruction](https://github.com/JiehongLin/Self-DPDN) in DPDN. For camera_train.pkl, camera_val.pkl, real_test.pkl, real_rain.pkl, please refer to this [link](https://drive.google.com/file/d/1Nz7cwcQWO_In4K6jKN1-5pQ0orY4UV9x/view?pli=1).
+For REAL275 and CAMERA25 datasets, please follow the [instruction](https://github.com/JiehongLin/Self-DPDN) in DPDN. For camera_train.pkl, camera_val.pkl, real_test.pkl, real_rain.pkl, please download in this [link](https://drive.google.com/file/d/1Nz7cwcQWO_In4K6jKN1-5pQ0orY4UV9x/view?pli=1).
 
 
 ### Training from scartch
